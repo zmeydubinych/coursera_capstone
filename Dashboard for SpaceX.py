@@ -11,9 +11,9 @@ spacex_df = pd.read_csv("https://cf-courses-data.s3.us.cloud-object-storage.appd
 max_payload = spacex_df['Payload Mass (kg)'].max()
 min_payload = spacex_df['Payload Mass (kg)'].min()
 
-filtered_df = spacex_df[spacex_df['Launch Site'] == 'CCAFS LC-40'].groupby(['class']).count().reset_index()
-filtered_df.rename(columns={'Unnamed: 0': 'Count of result'}, inplace=True)
-print(filtered_df)
+# filtered_df = spacex_df[spacex_df['Launch Site'] == 'CCAFS LC-40'].groupby(['class']).count().reset_index()
+# filtered_df.rename(columns={'Unnamed: 0': 'Count of result'}, inplace=True)
+# print(filtered_df)
 
 # Create a dash application
 app = dash.Dash(__name__)
@@ -77,7 +77,7 @@ def get_pie_chart(entered_site):
     else:
         fig = px.pie(filtered_df, values='Count of result',
                       names='class',
-                      title='Total Success launches for site')
+                      title=('Total Success launches for site: ' + entered_site))
         return fig
 
 # TASK 4:
