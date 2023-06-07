@@ -5,6 +5,7 @@ from dash import html
 from dash import dcc
 from dash.dependencies import Input, Output, State
 import plotly.express as px
+import seaborn as sns
 
 # Read the airline data into pandas dataframe
 spacex_df = pd.read_csv("https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBM-DS0321EN-SkillsNetwork/datasets/spacex_launch_dash.csv")
@@ -82,6 +83,19 @@ def get_pie_chart(entered_site):
 
 # TASK 4:
 # Add a callback function for `site-dropdown` and `payload-slider` as inputs, `success-payload-scatter-chart` as output
+@app.callback(Output(component_id='success-payload-scatter-chart', component_property='figure'),
+              [Input(component_id='site-dropdown', component_property='value'),
+               Input(component_id="payload-slider", component_property='value')])
+
+def get_scatter_chart(entered_site, payload_mass):
+    filtered_df = spacex_df[spacex_df['Launch Site'] == entered_site]
+    # filtered_df.rename(columns={'Unnamed: 0': 'Count of result'}, inplace=True)
+    if entered_site == 'ALL':
+        fig = px.scatter(spacex_df, x='Payload Mass (kg)', y='class', color='Booster Version Category')
+        return fig
+    else:
+        fig = px.scatter(filtered_df, x='Payload Mass (kg)', y='class', color='Booster Version Category')
+        return fig
 
 
 # Run the app
